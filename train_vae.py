@@ -23,7 +23,7 @@ import net
 
 # original images and reconstructed images
 def save_image(x, filename):
-    fig, ax = plt.subplots(3, 3, figsize=(9, 9), dpi=100)
+    fig, ax = plt.subplots(4, 4, figsize=(16, 16), dpi=100)
     for ai, xi in zip(ax.flatten(), x):
         ai.imshow(xi.reshape(28, 28))
     fig.savefig(filename)
