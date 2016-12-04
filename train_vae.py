@@ -41,8 +41,9 @@ def main():
                         help='learning minibatch size')
     parser.add_argument('--test', action='store_true',
                         help='Use tiny datasets for quick tests')
-    parser.add_argument('--out', '-o', type=str, default='./result/',
+    parser.add_argument('--out', '-o', type=str, default='./result',
                         help='dir to save snapshots.')
+    parser.add_argument('--betac', '-c', type=int, default=1, help='beta-vae.')
     parser.add_argument('--interval', '-i', type=int, default=5, help='interval of save images.')
     parser.add_argument
     args = parser.parse_args()
@@ -50,6 +51,7 @@ def main():
     batchsize = args.batchsize
     n_epoch = args.epoch
     n_latent = args.dimz
+    betac = args.betac
 
     print('GPU: {}'.format(args.gpu))
     print('# dim z: {}'.format(args.dimz))
@@ -60,7 +62,7 @@ def main():
     # Prepare dataset
     print('load MNIST dataset')
 
-    model = net.VAE(784, n_latent, 500)
+    model = net.VAE(784, n_latent, betac, 500)
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
@@ -76,7 +78,7 @@ def main():
 
     # Set up a trainer
     updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
-    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=args.out)
+    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=(args.out+'.'+str(betac)+'/'))
 
         # Evaluate the model with the test dataset for each epoch
     trainer.extend(extensions.Evaluator(test_iter, model, device=args.gpu))
