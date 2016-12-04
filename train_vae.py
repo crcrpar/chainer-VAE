@@ -62,7 +62,7 @@ def main():
     # Prepare dataset
     print('load MNIST dataset')
 
-    model = net.VAE(784, n_latent, betac, 500)
+    model = net.VAE(784, n_latent, 500, betac )
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
