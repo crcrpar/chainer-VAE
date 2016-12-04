@@ -2,6 +2,8 @@
 """Chainer example: train a VAE on MNIST
 """
 from __future__ import print_function
+from __future__ import division
+
 import argparse
 import os
 
@@ -131,7 +133,14 @@ def main():
         save_image(x1.data, filename=os.path.join(out_dir, 'test_reconstructed'))
 
         # draw images from randomly sampled z
-        z = chainer.Variable(np.random.normal(0, 1, (9, n_latent)).astype(np.float32))
+        t=3/n_latent
+        z0=np.zeros((16,n_latent))
+        for j in range(n_latent)
+            for i in range(16)
+                z0[i][j]=-3+j*2*t
+        print z0
+
+        z = chainer.Variable(z0).astype(np.float32))
         x = model.decode(z)
         save_image(x.data, filename=os.path.join(out_dir, 'sampled'))
     trainer.extend(save_images)
