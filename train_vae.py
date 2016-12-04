@@ -78,7 +78,7 @@ def main():
 
     # Set up a trainer
     updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
-    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=(args.out+'.'+str(betac)+'/'))
+    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=(args.out+'.betac'+str(betac)+'.dimz'+str(n_latent)+'/'))
 
         # Evaluate the model with the test dataset for each epoch
     trainer.extend(extensions.Evaluator(test_iter, model, device=args.gpu))
