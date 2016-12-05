@@ -144,8 +144,9 @@ def main():
             save_image(x.data, filename=os.path.join(out_dir, 'sampled00'+str(k) ))
             print(z0)
 
-        
-        x10 = chainer.Variable(np.asarray(train[1]), volatile='on')
+        #train_ind = [1, 3, 5, 10, 2, 0, 13, 15, 17,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5]
+
+        x10 = chainer.Variable(np.asarray(train[[1]]), volatile='on')
         
         for j in range(n_latent) :
             z0=np.zeros((25,n_latent))
