@@ -146,9 +146,9 @@ def main():
             z = chainer.Variable(z0.astype(np.float32))
             x = model.decode(z)
             save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)))
-            if j == 5 or j == 20 :
-                    print( '....................................................' )
-                    print(z0)
+            #if j == 5 or j == 20 :
+            #        print( '....................................................' )
+            #        print(z0)
 
 
     trainer.extend(save_images)
