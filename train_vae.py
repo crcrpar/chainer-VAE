@@ -159,7 +159,7 @@ def main():
                 z11[i]=z10
             z = chainer.Variable(z11.astype(np.float32))
             x = model.decode(z)
-            save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)+'.betac'+str(betac)+'.dimz'+str(n_latent) ))
+            save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)+'betac'+str(betac)+'dimz'+str(n_latent) ))
             #if j == 5 or j == 20 :
             #        print( '....................................................' )
             print(z11)
