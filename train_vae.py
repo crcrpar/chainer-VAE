@@ -138,10 +138,10 @@ def main():
         for j in range(n_latent) :
             for i in range(25) :
                 z0[i][j]=-3+j*2*t
-                print( z0 )
-                z = chainer.Variable(z0.astype(np.float32))
-                x = model.decode(z)
-                save_image(x.data, filename=os.path.join(out_dir, 'sampled'))
+            print( z0 )
+            z = chainer.Variable(z0.astype(np.float32))
+            x = model.decode(z)
+            save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)))
 
 
     trainer.extend(save_images)
