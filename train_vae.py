@@ -2,6 +2,8 @@
 """Chainer example: train a VAE on MNIST
 """
 from __future__ import print_function
+from __future__ import division
+
 import argparse
 import os
 
@@ -21,7 +23,7 @@ import net
 
 # original images and reconstructed images
 def save_image(x, filename):
-    fig, ax = plt.subplots(3, 3, figsize=(9, 9), dpi=100)
+    fig, ax = plt.subplots(5, 5, figsize=(25, 25), dpi=100)
     for ai, xi in zip(ax.flatten(), x):
         ai.imshow(xi.reshape(28, 28))
     fig.savefig(filename)
@@ -43,6 +45,7 @@ def main():
                         help='Use tiny datasets for quick tests')
     parser.add_argument('--out', '-o', type=str, default='./result/',
                         help='dir to save snapshots.')
+    parser.add_argument('--betac', '-c', type=int, default=1, help='beta-vae.')
     parser.add_argument('--interval', '-i', type=int, default=5, help='interval of save images.')
     parser.add_argument
     args = parser.parse_args()
@@ -50,6 +53,7 @@ def main():
     batchsize = args.batchsize
     n_epoch = args.epoch
     n_latent = args.dimz
+    betac = args.betac
 
     print('GPU: {}'.format(args.gpu))
     print('# dim z: {}'.format(args.dimz))
@@ -60,7 +64,7 @@ def main():
     # Prepare dataset
     print('load MNIST dataset')
 
-    model = net.VAE(784, n_latent, 500)
+    model = net.VAE(784, n_latent, 500, betac )
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         model.to_gpu()
@@ -76,7 +80,7 @@ def main():
 
     # Set up a trainer
     updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
-    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=args.out)
+    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=(args.out+'betac'+str(betac)+'.dimz'+str(n_latent)+'/'))
 
         # Evaluate the model with the test dataset for each epoch
     trainer.extend(extensions.Evaluator(test_iter, model, device=args.gpu))
@@ -129,9 +133,32 @@ def main():
         save_image(x1.data, filename=os.path.join(out_dir, 'test_reconstructed'))
 
         # draw images from randomly sampled z
-        z = chainer.Variable(np.random.normal(0, 1, (9, n_latent)).astype(np.float32))
-        x = model.decode(z)
-        save_image(x.data, filename=os.path.join(out_dir, 'sampled'))
+        t=5/25
+        
+        z20=np.ones((25,n_latent))
+        z0=z20*5
+        for k in range(11):
+            z0 = z0 - z20
+            z = chainer.Variable(z0.astype(np.float32))
+            x = model.decode(z)
+            save_image(x.data, filename=os.path.join(out_dir, 'sampled00'+str(k) ))
+            print(z0)
+
+        x11 = chainer.Variable(np.asarray(train[1]), volatile='on')
+        #z11 = model.encode(x11)[0]
+
+        for j in range(n_latent) :
+            z11 = model.encode(x11)[0]
+            for i in range(25) :
+                z11[i][j]=-5+i*2*t
+            z = chainer.Variable(z11.astype(np.float32))
+            x = model.decode(z)
+            save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)+'.betac'+str(betac)+'.dimz'+str(n_latent) ))
+            #if j == 5 or j == 20 :
+            #        print( '....................................................' )
+            print(z11)
+
+
     trainer.extend(save_images)
 
     if args.resume:

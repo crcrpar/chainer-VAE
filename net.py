@@ -14,7 +14,7 @@ import chainer.links as L
 class VAE(chainer.Chain):
     """Variational AutoEncoder"""
 
-    def __init__(self, n_in, n_latent, n_h, C=1.0, k=1):
+    def __init__(self, n_in, n_latent, n_h, C=15.0, k=1):
         """
         Args:
             args below are for loss function
@@ -46,7 +46,8 @@ class VAE(chainer.Chain):
             z = F.gaussian(mu, ln_var)
             rec_loss += F.bernoulli_nll(x, self.decode(z, sigmoid=False)) \
                 / (self.k * batchsize)
-        loss = rec_loss + \
+	#print('1  c: {}'.format(self.C))
+	loss = rec_loss + \
             self.C * gaussian_kl_divergence(mu, ln_var) / batchsize
         chainer.report({'loss': loss}, self)
         return loss
@@ -85,6 +86,7 @@ class VAE(chainer.Chain):
             rec_loss += F.bernoulli_nll(x, self.decode(z, sigmoid=False)) \
                 / (self.k * batchsize)
         self.rec_loss = rec_loss
-        self.loss = self.rec_loss + \
+        print('2  c: {}'.format(self.C))
+	self.loss = self.rec_loss + \
             self.C * gaussian_kl_divergence(mu, ln_var) / batchsize
         return self.loss
