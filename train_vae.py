@@ -23,7 +23,7 @@ import net
 
 # original images and reconstructed images
 def save_image(x, filename):
-    fig, ax = plt.subplots(4, 4, figsize=(16, 16), dpi=100)
+    fig, ax = plt.subplots(5, 5, figsize=(25, 25), dpi=100)
     for ai, xi in zip(ax.flatten(), x):
         ai.imshow(xi.reshape(28, 28))
     fig.savefig(filename)
@@ -133,16 +133,17 @@ def main():
         save_image(x1.data, filename=os.path.join(out_dir, 'test_reconstructed'))
 
         # draw images from randomly sampled z
-        t=3/n_latent
-        z0=np.zeros((16,n_latent))
+        t=3/25
+        z0=np.zeros((25,n_latent))
         for j in range(n_latent) :
-            for i in range(16) :
+            for i in range(25) :
                 z0[i][j]=-3+j*2*t
-        print( z0 )
+                print( z0 )
+                z = chainer.Variable(z0.astype(np.float32))
+                x = model.decode(z)
+                save_image(x.data, filename=os.path.join(out_dir, 'sampled'))
 
-        z = chainer.Variable(z0.astype(np.float32))
-        x = model.decode(z)
-        save_image(x.data, filename=os.path.join(out_dir, 'sampled'))
+
     trainer.extend(save_images)
 
     if args.resume:
