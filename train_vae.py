@@ -134,7 +134,11 @@ def main():
 
         # draw images from randomly sampled z
         t=3/25
-        #z0=np.zeros((25,n_latent))
+        z0=np.zeros((25,n_latent))
+        z = chainer.Variable(z0.astype(np.float32))
+        x = model.decode(z)
+        save_image(x.data, filename=os.path.join(out_dir, 'sampled00' ))
+
         for j in range(n_latent) :
             z0=np.zeros((25,n_latent))
             for i in range(25) :
