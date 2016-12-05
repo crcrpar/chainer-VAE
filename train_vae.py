@@ -144,13 +144,16 @@ def main():
             save_image(x.data, filename=os.path.join(out_dir, 'sampled00'+str(k) ))
             print(z0)
 
-        x11 = chainer.Variable(np.asarray(train[1]), volatile='on')
-        #z11 = model.encode(x11)[0]
-
+        
+        x10 = chainer.Variable(np.asarray(train[1]), volatile='on')
+        
         for j in range(n_latent) :
-            z11 = model.encode(x11)[0]
+            z0=np.zeros((25,n_latent))
+            z10 = model.encode(x10)[0]
+            z10[j]=0
             for i in range(25) :
-                z11[i][j]=-5+i*2*t
+                z10[j]=-5+i*2*t
+                z11[i]=z10
             z = chainer.Variable(z11.astype(np.float32))
             x = model.decode(z)
             save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)+'.betac'+str(betac)+'.dimz'+str(n_latent) ))
