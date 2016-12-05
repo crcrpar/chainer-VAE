@@ -143,12 +143,12 @@ def main():
             z0=np.zeros((25,n_latent))
             for i in range(25) :
                 z0[i][j]=-3+i*2*t
-                if i == 5 or i == 20 :
-                    print( '....................................................' )
-                    print(z0)
             z = chainer.Variable(z0.astype(np.float32))
             x = model.decode(z)
             save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)))
+            if j == 5 or j == 20 :
+                    print( '....................................................' )
+                    print(z0)
 
 
     trainer.extend(save_images)
