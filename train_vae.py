@@ -149,7 +149,7 @@ def main():
         #x10 = chainer.Variable(np.asarray(train[[1]]), volatile='on')
         
         for j in range(n_latent) :
-            z0=np.zeros((25,n_latent))
+            z11=np.zeros((25,n_latent))
             z10=np.zeros((n_latent))
             #z10 = model.encode(x10)[0]
             #print z10
