@@ -135,23 +135,25 @@ def main():
         # draw images from randomly sampled z
         t=5/25
         
-        z20=np.ones((25,n_latent))
-        z0=z20*5
-        for k in range(11):
-            z0 = z0 - z20
-            z = chainer.Variable(z0.astype(np.float32))
-            x = model.decode(z)
-            save_image(x.data, filename=os.path.join(out_dir, 'sampled00'+str(k) ))
-            print(z0)
+#        z20=np.ones((25,n_latent))
+#        z0=z20*5
+#        for k in range(11):
+#            z0 = z0 - z20
+#            z = chainer.Variable(z0.astype(np.float32))
+#            x = model.decode(z)
+#            save_image(x.data, filename=os.path.join(out_dir, 'sampled00'+str(k) ))
+#            print(z0)
 
         #train_ind = [1, 3, 5, 10, 2, 0, 13, 15, 17,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5]
 
-        x10 = chainer.Variable(np.asarray(train[[1]]), volatile='on')
+        #x10 = chainer.Variable(np.asarray(train[[1]]), volatile='on')
         
         for j in range(n_latent) :
             z0=np.zeros((25,n_latent))
-            z10 = model.encode(x10)[0]
-            z10[j]=0
+            z10=np.zeros((n_latent))
+            #z10 = model.encode(x10)[0]
+            #print z10
+            #z10[j]=0
             for i in range(25) :
                 z10[j]=-5+i*2*t
                 z11[i]=z10
