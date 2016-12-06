@@ -150,10 +150,10 @@ def main():
         
         for j in range(n_latent) :
             z11=np.zeros((25,n_latent))
-            z10=np.zeros((n_latent))
+            [z10] = model.encode(x10)[0].data
             #z10 = model.encode(x10)[0]
-            #print z10
-            #z10[j]=0
+            #print(z10.shape)
+            z10[j]=0
             for i in range(25) :
                 z10[j]=-5+i*2*t
                 z11[i]=z10
@@ -162,7 +162,7 @@ def main():
             save_image(x.data, filename=os.path.join(out_dir, 'sampled'+str(j)+'betac'+str(betac)+'dimz'+str(n_latent) ))
             #if j == 5 or j == 20 :
             #        print( '....................................................' )
-            print(z11)
+            #print(z11)
 
 
     trainer.extend(save_images)
