@@ -1,3 +1,6 @@
+# CAUTION
+Now that chainer official implementation is updated. Please refer it.
+
 # chainer-VAE
 implementation of https://github.com/pfnet/chainer/tree/master/examples/vae using Trainer.
 
